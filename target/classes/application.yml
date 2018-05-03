@@ -1,0 +1,46 @@
+#日志记录
+logging:
+  level:
+    com:
+      nieyue:
+        dao: 
+          impl: ERROR 
+    org: 
+      springframework:
+        web: DEBUG
+      hibernate: ERROR
+ 
+    
+spring: 
+  jpa: 
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    database: mysql
+    hibernate: 
+      ddl-auto: update
+      naming:
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+        strategy: org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy
+    show-sql: true
+    properties: 
+      hibernate: 
+        #current_session_context_class: thread
+        #current_session_context_class: jta
+        #current_session_context_class: org.springframework.orm.hibernate4.SpringSessionContext
+        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+  http: 
+    multipart: 
+      max-file-size: 30MB
+      max-request-size: 30MB
+  mvc:
+    date-format: yyyy-MM-dd HH:mm:ss
+  jackson: 
+    #property-naming-strategy: CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES
+    date-format: yyyy-MM-dd HH:mm:ss 
+    time-zone:  GMT+8
+  session:
+    store-type: redis     
+  profiles:
+    active: dev
+    #active: prod
+
