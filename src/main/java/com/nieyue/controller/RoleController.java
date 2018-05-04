@@ -1,6 +1,7 @@
 package com.nieyue.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nieyue.bean.Role;
-import com.nieyue.exception.AccountIsExistException;
+import com.nieyue.exception.CommonRollbackException;
 import com.nieyue.service.RoleService;
 import com.nieyue.util.StateResultList;
 
@@ -51,13 +52,13 @@ public class RoleController extends BaseController<Role,Integer>{
 	  @ApiImplicitParam(name="orderWay",value="排序方式",dataType="string", paramType = "query",defaultValue="desc")
 	  })
 	@RequestMapping(value = "/list", method = {RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody StateResultList<Map<String, List<Role>>> browsePagingRole(
+	public @ResponseBody StateResultList<List<Role>> browsePagingRole(
 			@RequestParam(value="pageNum",defaultValue="1",required=false)int pageNum,
 			@RequestParam(value="pageSize",defaultValue="10",required=false) int pageSize,
 			@RequestParam(value="orderName",required=false,defaultValue="updateDate") String orderName,
 			@RequestParam(value="orderWay",required=false,defaultValue="desc") String orderWay)  {
-		StateResultList<Map<String, List<Role>>> lr = super.list(pageNum, pageSize, orderName, orderWay,null, null, null, null, null, null, null, null);
-			return lr;
+		StateResultList<List<Role>> lr = super.list(pageNum, pageSize, orderName, orderWay,null, null, null, null, null, null, null, null);
+		return lr;
 			
 	}
 	/**
@@ -66,12 +67,28 @@ public class RoleController extends BaseController<Role,Integer>{
 	 */
 	@ApiOperation(value = "角色修改", notes = "角色修改")
 	@RequestMapping(value = "/update", method = {RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody StateResultList<Map<String, Role>> updateRole(
+	public @ResponseBody StateResultList<Role> updateRole(
 			@ModelAttribute Role role,HttpSession session)  {
-		Role nrole = roleService.load(role.getRoleId());
+		Role nrole =new Role();
+			Map<String, Object> eq=new HashMap<String,Object>();
+			eq.put("name", role.getName());
+			List<Role> rl = roleService.list(1,1,null,null,eq, null, null, null, null, null, null, null);
+			//存在不是自己就是别人的
+			if(rl.size()>0){
+				Role rr = rl.get(0);
+				//更新自己
+				if(rr.getRoleId().equals(role.getRoleId())){
+					nrole=rr;
+				}else{
+					//更新后两个一样的
+					throw new CommonRollbackException("已经存在");					
+				}
+			}else{//不存在直接更新
+				nrole = roleService.load(role.getRoleId());				
+			}
 		nrole.setUpdateDate(new Date());
-			getObject(role, nrole);
-		StateResultList<Map<String, Role>> r = super.update(nrole);
+		getObject(role, nrole);
+		StateResultList<Role> r = super.update(nrole);
 		return r;
 	}
 	/**
@@ -80,10 +97,16 @@ public class RoleController extends BaseController<Role,Integer>{
 	 */
 	@ApiOperation(value = "角色增加", notes = "角色增加")
 	@RequestMapping(value = "/add", method = {RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody StateResultList<Map<String, Role>> addRole(
+	public @ResponseBody StateResultList<Role> addRole(
 			@ModelAttribute Role role, HttpSession session) {
 		role.setUpdateDate(new Date());
-		StateResultList<Map<String, Role>> r = super.add(role);
+		Map<String, Object> eq=new HashMap<String,Object>();
+		eq.put("name", role.getName());
+		 int count = roleService.count(eq, null, null, null, null, null, null, null);
+		if(count>0){
+			throw new CommonRollbackException("已经存在");
+		}
+		StateResultList<Role> r = super.add(role);
 		return r;
 	}
 	/**
@@ -95,9 +118,9 @@ public class RoleController extends BaseController<Role,Integer>{
 		  @ApiImplicitParam(name="roleId",value="角色ID",dataType="int", paramType = "query",required=true)
 		  })
 	@RequestMapping(value = "/delete", method = {RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody StateResultList<Map<String, Role>> deleteRole(
+	public @ResponseBody StateResultList<Role> deleteRole(
 			@RequestParam("roleId") Integer roleId,HttpSession session)  {
-		StateResultList<Map<String, Role>> r = super.delete(roleId);
+		StateResultList<Role> r = super.delete(roleId);
 		return r;
 	}
 	/**
@@ -106,9 +129,9 @@ public class RoleController extends BaseController<Role,Integer>{
 	 */
 	@ApiOperation(value = "角色数量", notes = "角色数量查询")
 	@RequestMapping(value = "/count", method = {RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody StateResultList<Map<String, Integer>> count(
+	public @ResponseBody StateResultList<Integer> count(
 			HttpSession session)  {
-		StateResultList<Map<String, Integer>> r = super.count(null, null, null, null, null, null, null, null);
+		StateResultList<Integer> r = super.count(null, null, null, null, null, null, null, null);
 		return r;
 	}
 	/**
@@ -120,9 +143,9 @@ public class RoleController extends BaseController<Role,Integer>{
 		  @ApiImplicitParam(name="roleId",value="角色ID",dataType="int", paramType = "query",required=true)
 		  })
 	@RequestMapping(value = "/load", method = {RequestMethod.GET,RequestMethod.POST})
-	public  StateResultList<Map<String, Role>> loadRole(
+	public  StateResultList<Role> loadRole(
 			@RequestParam("roleId") Integer roleId,HttpSession session)  {
-		StateResultList<Map<String, Role>> r = super.load(roleId);
+		StateResultList<Role> r = super.load(roleId);
 		return r;
 	}
 	

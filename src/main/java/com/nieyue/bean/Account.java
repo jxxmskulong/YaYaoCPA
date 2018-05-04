@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -20,7 +21,16 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @ApiModel(value="账户",description="账户")
 @Entity
-@Table(name="account_tb")
+@Table(name="account_tb",
+		indexes={
+		@Index(name="INDEX_AUTH",columnList = "auth"),
+		@Index(name="INDEX_PHONE",columnList = "phone"),
+		@Index(name="INDEX_REALNAME",columnList = "realname"),
+		@Index(name="INDEX_CREATEDATE",columnList = "createDate"),
+		@Index(name="INDEX_LOGINDATE",columnList = "loginDate"),
+		@Index(name="INDEX_ROLEID",columnList = "roleId"),
+		@Index(name="INDEX_STATUS",columnList = "status")
+		})
 public class Account implements Serializable {
 
 	/**

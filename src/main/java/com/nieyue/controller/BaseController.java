@@ -3,7 +3,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,16 +26,19 @@ public  class BaseController<T,ID>  {
 
 	@Autowired
 	protected BaseService<T,ID> baseService;
-	protected StateResultList<Map<String,T>> result;//返回数据
+	protected StateResultList<T> result;//返回数据
+	protected StateResultList<Integer> result2;//返回数据
+	protected StateResultList<List<T>> result3;//返回数据
+/*	protected StateResultList<Map<String,T>> result;//返回数据
 	protected StateResultList<Map<String,Integer>> result2;//返回数据
 	protected StateResultList<Map<String,List<T>>> result3;//返回数据
-	
+*/	
 	/**
 	 * 获取泛型对象的类对象
 	 * @param t
 	 * @return
 	 */
-	public Class<T> getT(T t) {
+	public Class<T> getT() {
 		Type genType = getClass().getGenericSuperclass();  
 		Type[] params = ((ParameterizedType) genType).getActualTypeArguments();  
 		@SuppressWarnings("unchecked")
@@ -128,54 +130,58 @@ public  class BaseController<T,ID>  {
 	/**
 	 * 增加
 	 */
-	public StateResultList<Map<String,T>> add(T t)  {
-		Map<String,T> map=new HashMap<>();
+	public StateResultList<T> add(T t)  {
+		//Map<String,T> map=new HashMap<>();
 		boolean b=baseService.add(t);
 		if(b){
-			map.put(getName(t), t);
-			result=ResultUtil.getSlefSRSuccessList(map);
+			//map.put(getName(t), t);
+			//result=ResultUtil.getSlefSRSuccessList(map);
+			result=ResultUtil.getSlefSRSuccessList(t);
 			return result;
 		}
-		result=ResultUtil.getSlefSRFailList(map);
+		result=ResultUtil.getSlefSRFailList(t);
 		return result;
 	}
 	/**
 	* 更新
 	*/
-	public StateResultList<Map<String,T>> update(T t)  {
-		Map<String,T> map=new HashMap<>();
+	public StateResultList<T> update(T t)  {
+		//Map<String,T> map=new HashMap<>();
 		boolean b=baseService.update(t);
 		if(b){
-			map.put(getName(t), t);
-			result=ResultUtil.getSlefSRSuccessList(map);
+			//map.put(getName(t), t);
+			//result=ResultUtil.getSlefSRSuccessList(map);
+			result=ResultUtil.getSlefSRSuccessList(t);
 			return result;
 		}
-		result=ResultUtil.getSlefSRFailList(map);
+		result=ResultUtil.getSlefSRFailList(t);
 		return result;
 	}
 	/**
 	 * 删除
 	 */
-	public StateResultList<Map<String,T>> delete(Integer ID)  {
-		Map<String,T> map=new HashMap<>();
+	public StateResultList<T> delete(Integer ID)  {
+		//Map<String,T> map=new HashMap<>();
 		boolean b=baseService.delete(ID);
 		if(b){
-			result=ResultUtil.getSlefSRSuccessList(map);
+			//result=ResultUtil.getSlefSRSuccessList(map);
+			result=ResultUtil.getSlefSRSuccessList(null);
 			return result;
 		}
-		result=ResultUtil.getSlefSRFailList(map);
+		result=ResultUtil.getSlefSRFailList(null);
 		return result;
 	}
 	/**
 	*加载
 	*/
-	public StateResultList<Map<String,T>> load(Integer id)  {
-		Map<String,T> map=new HashMap<String,T>();
+	public StateResultList<T> load(Integer id)  {
+		//Map<String,T> map=new HashMap<String,T>();
 		//try {
 			T t=baseService.load(id);
 			if(t!=null &&!t.equals("")){
-				map.put(getName(t), t);
-				result=ResultUtil.getSlefSRSuccessList(map);
+				//map.put(getName(t), t);
+				//result=ResultUtil.getSlefSRSuccessList(map);
+				result=ResultUtil.getSlefSRSuccessList(t);
 				return result;
 			}else{
 				throw new NotIsNotExistException(" ");//不存在
@@ -189,7 +195,7 @@ public  class BaseController<T,ID>  {
 	/**
 	 * 数量
 	 */
-	public StateResultList<Map<String,Integer>> count(
+	public StateResultList<Integer> count(
 			Map<String,Object> eq,
 			Map<String,Object> gt,
 			Map<String,Object> ge,
@@ -198,12 +204,13 @@ public  class BaseController<T,ID>  {
 			Map<String,List<Object>> between,
 			Map<String,Object> like,
 			Map<String,List<Object>> in)  {
-		Map<String,Integer> map=new HashMap<>();
+		//Map<String,Integer> map=new HashMap<>();
 		//try {
 			
 			int total=baseService.count(eq, gt, ge, lt, le, between, like, in);
-			map.put("total", total);
-			result2=ResultUtil.getSlefSRSuccessList(map);
+			//map.put("total", total);
+			//result2=ResultUtil.getSlefSRSuccessList(map);
+			result2=ResultUtil.getSlefSRSuccessList(total);
 			return result2;
 		/*} catch (Exception e) {
 			result2=ResultUtil.getSlefSRFailList(map);
@@ -213,7 +220,7 @@ public  class BaseController<T,ID>  {
 	/**
 	 * 查询
 	 */
-	public StateResultList<Map<String,List<T>>> list(
+	public StateResultList<List<T>> list(
 			int pageNum,
 			int pageSize,
 			String orderName,
@@ -226,12 +233,13 @@ public  class BaseController<T,ID>  {
 			Map<String, List<Object>> between,
 			Map<String, Object> like,
 			Map<String, List<Object>> in)  {
-		Map<String,List<T>> map=new HashMap<>();
+		//Map<String,List<T>> map=new HashMap<>();
 		//try {
 			List<T> rl=baseService.list(pageNum, pageSize, orderName, orderWay, eq, gt, ge, lt, le, between, like, in);
 			if(rl.size()>0){
-				map.put("list", rl);
-				result3=ResultUtil.getSlefSRSuccessList(map);
+				//map.put("list", rl);
+				//result3=ResultUtil.getSlefSRSuccessList(map);
+				result3=ResultUtil.getSlefSRSuccessList(rl);
 				return result3;
 			}else{
 				throw new NotAnymoreException();//没有更多
