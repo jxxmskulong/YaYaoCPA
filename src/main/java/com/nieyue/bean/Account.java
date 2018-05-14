@@ -86,20 +86,10 @@ public class Account implements Serializable {
 	@ApiModelProperty(value="国家",example="国家")
 	private String country;
 	/**
-	 * 安全等级，1低，2中，3高
-	 */
-	@ApiModelProperty(value="安全等级，1低，2中，3高",example="安全等级，1低，2中，3高")
-	private Integer safetyGrade;
-	/**
 	 * 认证，0没认证，1审核中，2已认证
 	 */
 	@ApiModelProperty(value="认证，0没认证，1审核中，2已认证",example="认证，0没认证，1审核中，2已认证")
 	private Integer auth;
-	/**
-	 * 卡密接受方式，0全部接收，1本账号内，2邮箱接收，3手机接收
-	 */
-	@ApiModelProperty(value="卡密接受方式，0全部接收，1本账号内，2邮箱接收，3手机接收",example="卡密接受方式，0全部接收，1本账号内，2邮箱接收，3手机接收")
-	private Integer cardSecretReceive;
 	/**
 	 * 身份证
 	 */
@@ -200,23 +190,11 @@ public class Account implements Serializable {
 	public void setCountry(String country) {
 		this.country = country;
 	}
-	public Integer getSafetyGrade() {
-		return safetyGrade;
-	}
-	public void setSafetyGrade(Integer safetyGrade) {
-		this.safetyGrade = safetyGrade;
-	}
 	public Integer getAuth() {
 		return auth;
 	}
 	public void setAuth(Integer auth) {
 		this.auth = auth;
-	}
-	public Integer getCardSecretReceive() {
-		return cardSecretReceive;
-	}
-	public void setCardSecretReceive(Integer cardSecretReceive) {
-		this.cardSecretReceive = cardSecretReceive;
 	}
 	public String getIdentityCards() {
 		return identityCards;

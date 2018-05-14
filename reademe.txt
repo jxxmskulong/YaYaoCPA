@@ -4,4 +4,4 @@
 渠道主：
 	1.web获取推广链接，链接上拼接渠道id.
 	2.安卓推广，（暂不用，https://blog.csdn.net/hjh200507609/article/details/51775636）
-	3.ios推广，(必选，idfa,ip;可选deviceId,deviceVersion,deviceType)
+	3.ios推广，(必选，idfa,ip,mac;可选deviceId,deviceVersion,deviceType)

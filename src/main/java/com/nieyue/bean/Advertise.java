@@ -19,13 +19,14 @@ import io.swagger.annotations.ApiModelProperty;
  * @author 聂跃
  * @date 2017年4月12日
  */
-@ApiModel(value="账户",description="账户")
+@ApiModel(value="广告",description="广告")
 @Entity
 @Table(name="advertise_tb",
 		indexes={
+		@Index(name="INDEX_TYPE",columnList = "type"),
 		@Index(name="INDEX_PRICE",columnList = "price"),
 		@Index(name="INDEX_TASKNUM",columnList = "taskNum"),
-		@Index(name="INDEX_ACCOUNTID",columnList = "accountId"),
+		@Index(name="INDEX_ADVERTISEACCOUNTID",columnList = "advertiseAccountId"),
 		@Index(name="INDEX_STATUS",columnList = "status"),
 		@Index(name="INDEX_CREATEDATE",columnList = "createDate"),
 		@Index(name="INDEX_UPDATEDATE",columnList = "updateDate")
@@ -45,6 +46,16 @@ public class Advertise implements Serializable {
 	@SequenceGenerator(name = "increment",initialValue = 1000)
 	private Integer advertiseId;
 	/**
+	 * 平台1web，2android，3ios
+	 */
+	@ApiModelProperty(value="平台1web，2android，3ios",example="平台1web，2android，3ios")
+	private Integer platform;
+	/**
+	 * 类型1注册，2充值
+	 */
+	@ApiModelProperty(value="类型1注册，2充值",example="类型1注册，2充值")
+	private Integer type;
+	/**
 	 * 广告名称
 	 */
 	@ApiModelProperty(value="广告名称",example="广告名称")
@@ -60,16 +71,6 @@ public class Advertise implements Serializable {
 	@ApiModelProperty(value="任务要求",example="任务要求")
 	private String taskDemands;
 	/**
-	 * 货币
-	 */
-	@ApiModelProperty(value="货币",example="货币")
-	private String currency;
-	/**
-	 * 国家
-	 */
-	@ApiModelProperty(value="国家",example="国家")
-	private String country;
-	/**
 	 * 图标
 	 */
 	@ApiModelProperty(value="图标",example="图标")
@@ -79,6 +80,11 @@ public class Advertise implements Serializable {
 	 */
 	@ApiModelProperty(value="价格",example="价格")
 	private Double price;
+	/**
+	 * 分成比例
+	 */
+	@ApiModelProperty(value="分成比例",example="分成比例")
+	private Double proportion;
 	/**
 	 * 投放链接
 	 */
@@ -100,21 +106,21 @@ public class Advertise implements Serializable {
 	@ApiModelProperty(value="更新时间",example="更新时间")
 	private Date updateDate;
 	/**
-	 * 状态 1是正常，2是停用
+	 * 状态 1正常，2停用，3完成
 	 */
-	@ApiModelProperty(value="状态 1是正常，2是停用",example="状态 1是正常，2是停用")
+	@ApiModelProperty(value="状态 1正常，2停用，3完成",example="状态 1正常，2停用，3完成")
 	private Integer status;
 	/**
-	 * 账户id外键
+	 * 广告账户id外键
 	 */
-	@ApiModelProperty(value="账户id外键",example="账户id外键")
-	private Integer accountId;
+	@ApiModelProperty(value="广告账户id外键",example="广告账户id外键")
+	private Integer advertiseAccountId;
 	/**
 	 * 账户
 	 */
 	@ApiModelProperty(value="账户",example="账户")
 	@Transient
-	private Account account;
+	private Account advertiseAccount;
 	public Integer getAdvertiseId() {
 		return advertiseId;
 	}
@@ -138,18 +144,6 @@ public class Advertise implements Serializable {
 	}
 	public void setTaskDemands(String taskDemands) {
 		this.taskDemands = taskDemands;
-	}
-	public String getCurrency() {
-		return currency;
-	}
-	public void setCurrency(String currency) {
-		this.currency = currency;
-	}
-	public String getCountry() {
-		return country;
-	}
-	public void setCountry(String country) {
-		this.country = country;
 	}
 	public String getIcon() {
 		return icon;
@@ -193,19 +187,37 @@ public class Advertise implements Serializable {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	public Integer getAccountId() {
-		return accountId;
-	}
-	public void setAccountId(Integer accountId) {
-		this.accountId = accountId;
-	}
-	public Account getAccount() {
-		return account;
-	}
-	public void setAccount(Account account) {
-		this.account = account;
-	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	public Integer getAdvertiseAccountId() {
+		return advertiseAccountId;
+	}
+	public void setAdvertiseAccountId(Integer advertiseAccountId) {
+		this.advertiseAccountId = advertiseAccountId;
+	}
+	public Account getAdvertiseAccount() {
+		return advertiseAccount;
+	}
+	public void setAdvertiseAccount(Account advertiseAccount) {
+		this.advertiseAccount = advertiseAccount;
+	}
+	public Integer getPlatform() {
+		return platform;
+	}
+	public void setPlatform(Integer platform) {
+		this.platform = platform;
+	}
+	public Integer getType() {
+		return type;
+	}
+	public void setType(Integer type) {
+		this.type = type;
+	}
+	public Double getProportion() {
+		return proportion;
+	}
+	public void setProportion(Double proportion) {
+		this.proportion = proportion;
 	}
 }

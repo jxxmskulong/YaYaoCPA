@@ -45,9 +45,9 @@ public class FinanceRecord implements Serializable {
 	@SequenceGenerator(name = "increment",initialValue = 1000)
 	private Integer financeRecordId;
 	/**
-	 * 方式，1支付宝，2微信,3百度钱包,4Paypal,5网银
+	 * 方式，1支付宝，2微信,3百度钱包,4Paypal,5网银,6cpa,7cps
 	 */
-	@ApiModelProperty(value="方式，1支付宝，2微信,3百度钱包,4Paypal,5网银",example="方式，1支付宝，2微信,3百度钱包,4Paypal,5网银")
+	@ApiModelProperty(value="方式，1支付宝，2微信,3百度钱包,4Paypal,5网银,6cpa,7cps",example="方式，1支付宝，2微信,3百度钱包,4Paypal,5网银,6cpa,7cps")
 	private Integer method;
 	/**
 	 * 类型，1充值，2提现，3消费，4收益，5赠送
