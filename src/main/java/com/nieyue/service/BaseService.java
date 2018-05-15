@@ -25,8 +25,9 @@ public interface BaseService<T,ID> {
 			Map<String,Object> le,
 			Map<String,List<Object>> between,
 			Map<String,Object> like,
-			Map<String,List<Object>> in
-			) ;	
+			Map<String,List<Object>> in,
+			Map<String,Object> or
+			) ;
 	/** 浏览*/
 	public List<T> list(
 			int pageNum,
@@ -40,6 +41,7 @@ public interface BaseService<T,ID> {
 			Map<String,Object> le,
 			Map<String,List<Object>> between,
 			Map<String,Object> like,
-			Map<String,List<Object>> in
-			);	
+			Map<String,List<Object>> in,
+			Map<String,Object> or
+			);
 }

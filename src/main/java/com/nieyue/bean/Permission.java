@@ -39,8 +39,10 @@ public class Permission implements Serializable{
      */
     @ApiModelProperty(value="权限id",example="权限id")
     @Id
-   	@GeneratedValue(strategy=GenerationType.AUTO,generator="increment")
-   	@SequenceGenerator(name = "increment",initialValue = 1000)
+	@GeneratedValue(strategy=GenerationType.IDENTITY,generator="identity")
+	@SequenceGenerator(name = "identity",initialValue = 1000,allocationSize=1)
+	//@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="uuid")
+	//@SequenceGenerator(name = "uuid")
     private Integer permissionId;
 
     /**

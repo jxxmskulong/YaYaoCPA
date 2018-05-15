@@ -42,8 +42,10 @@ public class Advertise implements Serializable {
 	 */
 	@ApiModelProperty(value="广告id",example="广告id")
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO,generator="increment")
-	@SequenceGenerator(name = "increment",initialValue = 1000)
+	@GeneratedValue(strategy=GenerationType.IDENTITY,generator="identity")
+	@SequenceGenerator(name = "identity",initialValue = 1000,allocationSize=1)
+	//@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="uuid")
+	//@SequenceGenerator(name = "uuid")
 	private Integer advertiseId;
 	/**
 	 * 平台1web，2android，3ios

@@ -11,16 +11,17 @@ logging:
       hibernate: ERROR
  
     
-spring: 
+spring:
   jpa: 
     database-platform: org.hibernate.dialect.MySQL5Dialect
     database: mysql
-    hibernate: 
+    hibernate:
       ddl-auto: update
       naming:
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
         strategy: org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy
+      use-new-id-generator-mappings: true
     show-sql: true
     properties: 
       hibernate: 

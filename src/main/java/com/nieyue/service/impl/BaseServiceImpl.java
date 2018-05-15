@@ -48,16 +48,16 @@ public abstract class BaseServiceImpl<T,ID>  implements BaseService<T,ID>{
 	@Transactional(readOnly=true)
 	public int count(Map<String, Object> eq, Map<String, Object> gt, Map<String, Object> ge, Map<String, Object> lt,
 			Map<String, Object> le, Map<String, List<Object>> between, Map<String, Object> like,
-			Map<String, List<Object>> in) {
-		return baseDao.count(eq, gt, ge, lt, le, between, like, in);
+			Map<String, List<Object>> in,Map<String,Object> or) {
+		return baseDao.count(eq, gt, ge, lt, le, between, like, in,or);
 	}
 
 	@Override
 	@Transactional(readOnly=true)
 	public List<T> list(int pageNum, int pageSize, String orderName, String orderWay, Map<String, Object> eq,
 			Map<String, Object> gt, Map<String, Object> ge, Map<String, Object> lt, Map<String, Object> le,
-			Map<String, List<Object>> between, Map<String, Object> like, Map<String, List<Object>> in) {
-		return baseDao.list(pageNum, pageSize, orderName, orderWay, eq, gt, ge, lt, le, between, like, in);
+			Map<String, List<Object>> between, Map<String, Object> like, Map<String, List<Object>> in,Map<String,Object> or) {
+		return baseDao.list(pageNum, pageSize, orderName, orderWay, eq, gt, ge, lt, le, between, like, in,or);
 	}
 
 }

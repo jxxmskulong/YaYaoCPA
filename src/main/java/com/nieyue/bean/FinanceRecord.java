@@ -41,8 +41,10 @@ public class FinanceRecord implements Serializable {
 	 */
 	@ApiModelProperty(value="财务记录id",example="财务记录id")
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO,generator="increment")
-	@SequenceGenerator(name = "increment",initialValue = 1000)
+	@GeneratedValue(strategy=GenerationType.IDENTITY,generator="identity")
+	@SequenceGenerator(name = "identity",initialValue = 1000,allocationSize=1)
+	//@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="uuid")
+	//@SequenceGenerator(name = "uuid")
 	private Integer financeRecordId;
 	/**
 	 * 方式，1支付宝，2微信,3百度钱包,4Paypal,5网银,6cpa,7cps

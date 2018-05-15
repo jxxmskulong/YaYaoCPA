@@ -42,8 +42,10 @@ public class Account implements Serializable {
 	 */
 	@ApiModelProperty(value="账户id",example="账户id")
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO,generator="increment")
-	@SequenceGenerator(name = "increment",initialValue = 1000)
+	@GeneratedValue(strategy=GenerationType.IDENTITY,generator="identity")
+	@SequenceGenerator(name = "identity",initialValue = 1000,allocationSize=1)
+	//@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="uuid")
+	//@SequenceGenerator(name = "uuid")
 	private Integer accountId;
 	/**
 	 * 注册手机号
@@ -253,6 +255,5 @@ public class Account implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
 	
 }

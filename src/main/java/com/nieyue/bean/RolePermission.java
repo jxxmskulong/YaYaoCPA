@@ -1,8 +1,5 @@
 package com.nieyue.bean;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -13,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * 角色权限
@@ -39,8 +39,10 @@ public class RolePermission implements Serializable{
      */
     @ApiModelProperty(value="角色权限id",example="角色权限id")
     @Id
-   	@GeneratedValue(strategy=GenerationType.AUTO,generator="increment")
-   	@SequenceGenerator(name = "increment",initialValue = 1000)
+	@GeneratedValue(strategy=GenerationType.IDENTITY,generator="identity")
+	@SequenceGenerator(name = "identity",initialValue = 1000,allocationSize=1)
+	//@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="uuid")
+	//@SequenceGenerator(name = "uuid")
     private Integer rolePermissionId;
 
     /**

@@ -203,11 +203,12 @@ public  class BaseController<T,ID>  {
 			Map<String,Object> le,
 			Map<String,List<Object>> between,
 			Map<String,Object> like,
-			Map<String,List<Object>> in)  {
+			Map<String,List<Object>> in,
+			Map<String,Object> or)  {
 		//Map<String,Integer> map=new HashMap<>();
 		//try {
 			
-			int total=baseService.count(eq, gt, ge, lt, le, between, like, in);
+			int total=baseService.count(eq, gt, ge, lt, le, between, like, in,or);
 			//map.put("total", total);
 			//result2=ResultUtil.getSlefSRSuccessList(map);
 			result2=ResultUtil.getSlefSRSuccessList(total);
@@ -232,10 +233,11 @@ public  class BaseController<T,ID>  {
 			Map<String, Object> le,
 			Map<String, List<Object>> between,
 			Map<String, Object> like,
-			Map<String, List<Object>> in)  {
+			Map<String, List<Object>> in,
+			Map<String,Object> or)  {
 		//Map<String,List<T>> map=new HashMap<>();
 		//try {
-			List<T> rl=baseService.list(pageNum, pageSize, orderName, orderWay, eq, gt, ge, lt, le, between, like, in);
+			List<T> rl=baseService.list(pageNum, pageSize, orderName, orderWay, eq, gt, ge, lt, le, between, like, in,or);
 			if(rl.size()>0){
 				//map.put("list", rl);
 				//result3=ResultUtil.getSlefSRSuccessList(map);
@@ -249,6 +251,5 @@ public  class BaseController<T,ID>  {
 			return result3;
 		}*/
 	}
-
 	
 }

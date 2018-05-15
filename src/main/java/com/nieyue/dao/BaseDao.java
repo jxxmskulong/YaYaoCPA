@@ -37,7 +37,8 @@ public interface BaseDao<T, ID> {
 			Map<String,Object> le,
 			Map<String,List<Object>> between,
 			Map<String,Object> like,
-			Map<String,List<Object>> in
+			Map<String,List<Object>> in,
+			Map<String,Object> or			
 			);	
 	/** 浏览*/
 	public List<T> list(
@@ -52,6 +53,7 @@ public interface BaseDao<T, ID> {
 			Map<String,Object> le,
 			Map<String,List<Object>> between,
 			Map<String,Object> like,
-			Map<String,List<Object>> in
-			);	
+			Map<String,List<Object>> in,
+			Map<String,Object> or	
+			);
 }

@@ -9,6 +9,7 @@ import org.apache.commons.collections.MapUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -86,7 +87,7 @@ public BaseDaoImpl() {
 
 	@Override
 	public int count(Map<String, Object> eq, Map<String, Object> gt, Map<String, Object> ge, Map<String, Object> lt,
-			Map<String, Object> le, Map<String, List<Object>> between, Map<String, Object> like, Map<String, List<Object>> in) {
+			Map<String, Object> le, Map<String, List<Object>> between, Map<String, Object> like, Map<String, List<Object>> in,Map<String,Object> or) {
 		Criteria c = getSession().createCriteria(entityClass);
 		//不为空，则遍历
 		//等于
@@ -153,6 +154,16 @@ public BaseDaoImpl() {
 				}
 			}
 		}
+		//or 或者
+		if(MapUtils.isNotEmpty(or)){
+			Disjunction dis = Restrictions.disjunction();
+			for (Map.Entry<String, Object> entry : or.entrySet()) {
+				if(!StringUtils.isEmpty(entry.getKey())&&!StringUtils.isEmpty(entry.getValue())){
+					 dis.add(Restrictions.eq(entry.getKey(), entry.getValue()));
+				}
+			}
+			c .add(dis);
+		}
 		//行数
 		c.setProjection(Projections.rowCount()); 
 		return ((Long)c.uniqueResult()).intValue();
@@ -160,7 +171,7 @@ public BaseDaoImpl() {
 	@Override
 	public List<T> list(int pageNum, int pageSize, String orderName, String orderWay, Map<String, Object> eq,
 			Map<String, Object> gt, Map<String, Object> ge, Map<String, Object> lt, Map<String, Object> le,
-			Map<String, List<Object>> between, Map<String, Object> like, Map<String, List<Object>> in) {
+			Map<String, List<Object>> between, Map<String, Object> like, Map<String, List<Object>> in,Map<String,Object> or) {
 		Criteria c = getSession().createCriteria(entityClass);
 		//不为空，则遍历
 		//等于
@@ -227,6 +238,16 @@ public BaseDaoImpl() {
 						}
 					}
 				}
+				//or 或者
+				if(MapUtils.isNotEmpty(or)){
+					Disjunction dis = Restrictions.disjunction();
+					for (Map.Entry<String, Object> entry : or.entrySet()) {
+						if(!StringUtils.isEmpty(entry.getKey())&&!StringUtils.isEmpty(entry.getValue())){
+							 dis.add(Restrictions.eq(entry.getKey(), entry.getValue()));
+						}
+					}
+					c .add(dis);
+				}
 		//分页
 		if(pageNum<=1){
 		 pageNum=1;//从第一个记录开始
@@ -250,5 +271,6 @@ public BaseDaoImpl() {
 		List<T> ts=(List<T>)c.list();
 		return ts;
 	}
-	
+
+
 }

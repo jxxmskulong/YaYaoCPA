@@ -26,4 +26,5 @@ public  class AccountDaoImpl extends BaseDaoImpl<Account,Integer> implements Acc
 			Account Account = (Account) c.uniqueResult();
 			return Account;
 	}
+
 }

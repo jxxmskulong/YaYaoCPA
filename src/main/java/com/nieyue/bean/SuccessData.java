@@ -40,8 +40,10 @@ public class SuccessData implements Serializable {
 	 */
 	@ApiModelProperty(value="成功数据id",example="成功数据id")
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO,generator="increment")
-	@SequenceGenerator(name = "increment",initialValue = 1000)
+	@GeneratedValue(strategy=GenerationType.IDENTITY,generator="identity")
+	@SequenceGenerator(name = "identity",initialValue = 1000,allocationSize=1)
+	//@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="uuid")
+	//@SequenceGenerator(name = "uuid")
 	private Integer successDataId;
 	/**
 	 * 状态，0已失败，1已成功

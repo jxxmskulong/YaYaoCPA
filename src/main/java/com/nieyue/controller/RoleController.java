@@ -57,7 +57,7 @@ public class RoleController extends BaseController<Role,Integer>{
 			@RequestParam(value="pageSize",defaultValue="10",required=false) int pageSize,
 			@RequestParam(value="orderName",required=false,defaultValue="updateDate") String orderName,
 			@RequestParam(value="orderWay",required=false,defaultValue="desc") String orderWay)  {
-		StateResultList<List<Role>> lr = super.list(pageNum, pageSize, orderName, orderWay,null, null, null, null, null, null, null, null);
+		StateResultList<List<Role>> lr = super.list(pageNum, pageSize, orderName, orderWay,null, null, null, null, null, null, null, null,null);
 		return lr;
 			
 	}
@@ -72,7 +72,7 @@ public class RoleController extends BaseController<Role,Integer>{
 		Role nrole =new Role();
 			Map<String, Object> eq=new HashMap<String,Object>();
 			eq.put("name", role.getName());
-			List<Role> rl = roleService.list(1,1,null,null,eq, null, null, null, null, null, null, null);
+			List<Role> rl = roleService.list(1,1,null,null,eq, null, null, null, null, null, null, null,null);
 			//存在不是自己就是别人的
 			if(rl.size()>0){
 				Role rr = rl.get(0);
@@ -102,7 +102,7 @@ public class RoleController extends BaseController<Role,Integer>{
 		role.setUpdateDate(new Date());
 		Map<String, Object> eq=new HashMap<String,Object>();
 		eq.put("name", role.getName());
-		 int count = roleService.count(eq, null, null, null, null, null, null, null);
+		 int count = roleService.count(eq, null, null, null, null, null, null, null,null);
 		if(count>0){
 			throw new CommonRollbackException("已经存在");
 		}
@@ -131,7 +131,7 @@ public class RoleController extends BaseController<Role,Integer>{
 	@RequestMapping(value = "/count", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody StateResultList<Integer> count(
 			HttpSession session)  {
-		StateResultList<Integer> r = super.count(null, null, null, null, null, null, null, null);
+		StateResultList<Integer> r = super.count(null, null, null, null, null, null, null, null,null);
 		return r;
 	}
 	/**
