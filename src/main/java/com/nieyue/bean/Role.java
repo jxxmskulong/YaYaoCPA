@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import io.swagger.annotations.ApiModel;
@@ -32,8 +31,8 @@ public class Role implements Serializable{
      */
     @ApiModelProperty(value="角色id",example="角色id")
     @Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY,generator="identity")
-	@SequenceGenerator(name = "identity",initialValue = 1000,allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.AUTO)
+  //@SequenceGenerator(name = "identity",initialValue = 1000,allocationSize=1)
 	//@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="uuid")
 	//@SequenceGenerator(name = "uuid")
     private Integer roleId;
@@ -54,13 +53,6 @@ public class Role implements Serializable{
     @ApiModelProperty(value="角色更新时间",example="角色更新时间")
     private Date updateDate;
 
-    public Role(Integer roleId, String name, String duty, Date updateDate) {
-        super();
-        this.roleId = roleId;
-        this.name = name;
-        this.duty = duty;
-        this.updateDate = updateDate;
-    }
     public Role() {
         super();
     }

@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import io.swagger.annotations.ApiModel;
@@ -41,8 +40,8 @@ public class FinanceRecord implements Serializable {
 	 */
 	@ApiModelProperty(value="财务记录id",example="财务记录id")
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY,generator="identity")
-	@SequenceGenerator(name = "identity",initialValue = 1000,allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	//@SequenceGenerator(name = "identity",initialValue = 1000,allocationSize=1)
 	//@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="uuid")
 	//@SequenceGenerator(name = "uuid")
 	private Integer financeRecordId;
