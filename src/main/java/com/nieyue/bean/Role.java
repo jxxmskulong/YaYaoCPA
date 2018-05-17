@@ -32,7 +32,7 @@ public class Role implements Serializable{
     @ApiModelProperty(value="角色id",example="角色id")
     @Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-  //@SequenceGenerator(name = "identity",initialValue = 1000,allocationSize=1)
+    //@SequenceGenerator(name = "identity",initialValue = 1000,allocationSize=1)
 	//@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="uuid")
 	//@SequenceGenerator(name = "uuid")
     private Integer roleId;

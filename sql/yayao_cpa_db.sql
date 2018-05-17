@@ -1,3 +1,13 @@
+alter table account_tb auto_increment=1000;
+alter table advertise_tb auto_increment=1000;
+alter table channel_advertise_tb auto_increment=1000;
+alter table finance_tb auto_increment=1000;
+alter table finance_record_tb auto_increment=1000;
+alter table permission_tb auto_increment=1000;
+alter table report_data_tb auto_increment=1000;
+alter table role_tb auto_increment=1000;
+alter table role_permission_tb auto_increment=1000;
+alter table success_data_tb auto_increment=1000;
 #设置初始角色
 INSERT IGNORE INTO role_tb (name,duty,update_date) 
 VALUES ("超级管理员","超级管理员",now());
