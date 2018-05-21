@@ -22,6 +22,7 @@ import io.swagger.annotations.ApiModelProperty;
 @Entity
 @Table(name="advertise_tb",
 		indexes={
+		@Index(name="INDEX_PLATFORM",columnList = "platform"),
 		@Index(name="INDEX_TYPE",columnList = "type"),
 		@Index(name="INDEX_PRICE",columnList = "price"),
 		@Index(name="INDEX_TASKNUM",columnList = "taskNum"),

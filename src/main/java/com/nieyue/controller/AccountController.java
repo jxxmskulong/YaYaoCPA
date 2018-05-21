@@ -22,6 +22,8 @@ import com.nieyue.bean.Account;
 import com.nieyue.exception.AccountAlreadyAuthException;
 import com.nieyue.exception.AccountAuthAuditException;
 import com.nieyue.exception.AccountIsExistException;
+import com.nieyue.exception.AccountIsNotLoginException;
+import com.nieyue.exception.AccountLoginException;
 import com.nieyue.exception.AccountPhoneIsNotExistException;
 import com.nieyue.exception.CommonRollbackException;
 import com.nieyue.exception.MySessionException;
@@ -90,14 +92,15 @@ public class AccountController extends BaseController<Account,Integer>{
 			Map<String, Object> eq=new HashMap<String,Object>();
 			eq.put("accountId", accountId);
 			eq.put("auth", auth);
-			eq.put("phone", phone);
-			eq.put("email", email);
 			eq.put("realname", realname);
 			eq.put("roleId", roleId);
 			eq.put("status", status);
 			eq.put("createDate", createDate);
 			eq.put("loginDate", loginDate);
-			StateResultList<List<Account>> lr = super.list(pageNum, pageSize, orderName, orderWay,eq, null, null, null, null, null, null, null,null);
+			Map<String, Object> like=new HashMap<String,Object>();
+			like.put("phone", phone);
+			like.put("email", email);
+			StateResultList<List<Account>> lr = super.list(pageNum, pageSize, orderName, orderWay,eq, null, null, null, null, null, like, null,null);
 			return lr;
 			
 	}
@@ -110,24 +113,16 @@ public class AccountController extends BaseController<Account,Integer>{
 	public @ResponseBody StateResultList<Account> updateAccount(
 			@ModelAttribute Account account,HttpSession session)  {
 			Account nAccount =new Account();
-			if(StringUtils.isNotEmpty(account.getPhone())){
-				Map<String, Object> eq1=new HashMap<String,Object>();
-				eq1.put("phone", account.getPhone());
-				eq1.put("accountId", account.getAccountId());				
-				List<Account> rl = accountService.list(1,1,null,null,eq1, null, null, null, null, null, null, null,null);
-				if(rl.size()>0){
-					throw new AccountIsExistException();//账户已经存在
-				}
+			Map<String, Object> eq=new HashMap<String,Object>();
+			eq.put("accountId", account.getAccountId());				
+			Map<String, Object> or=new HashMap<String,Object>();
+			or.put("email", account.getEmail());
+			or.put("phone", account.getPhone());
+			List<Account> rl = accountService.list(1,1,null,null,eq, null, null, null, null, null, null, null,or);
+			if(rl.size()>0){
+				throw new AccountIsExistException();//账户已经存在
 			}
-			if(StringUtils.isNotEmpty(account.getEmail())){
-				Map<String, Object> eq2=new HashMap<String,Object>();
-				eq2.put("email", account.getEmail());
-				eq2.put("accountId", account.getAccountId());				
-				List<Account> rl = accountService.list(1,1,null,null,eq2, null, null, null, null, null, null, null,null);
-				if(rl.size()>0){
-					throw new AccountIsExistException();//账户已经存在
-				}
-			}
+	
 			if(account.getPassword()!=null){
 				account.setPassword(MyDESutil.getMD5(account.getPassword()));
 			}
@@ -150,24 +145,15 @@ public class AccountController extends BaseController<Account,Integer>{
 	@RequestMapping(value = "/add", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody StateResultList<Account> addAccount(
 			@ModelAttribute Account account, HttpSession session) {
-		if(StringUtils.isNotEmpty(account.getPhone())){
-			Map<String, Object> eq1=new HashMap<String,Object>();
-			eq1.put("phone", account.getPhone());
-			eq1.put("accountId", account.getAccountId());				
-			List<Account> rl = accountService.list(1,1,null,null,eq1, null, null, null, null, null, null, null,null);
+			Map<String, Object> eq=new HashMap<String,Object>();
+			eq.put("accountId", account.getAccountId());				
+			Map<String, Object> or=new HashMap<String,Object>();
+			or.put("phone", account.getPhone());
+			or.put("email", account.getEmail());
+			List<Account> rl = accountService.list(1,1,null,null,eq, null, null, null, null, null, null, null,or);
 			if(rl.size()>0){
 				throw new AccountIsExistException();//账户已经存在
 			}
-		}
-		if(StringUtils.isNotEmpty(account.getEmail())){
-			Map<String, Object> eq2=new HashMap<String,Object>();
-			eq2.put("email", account.getEmail());
-			eq2.put("accountId", account.getAccountId());				
-			List<Account> rl = accountService.list(1,1,null,null,eq2, null, null, null, null, null, null, null,null);
-			if(rl.size()>0){
-				throw new AccountIsExistException();//账户已经存在
-			}
-		}
 		account.setCreateDate(new Date());
 		account.setLoginDate(new Date());
 		StateResultList<Account> r = super.add(account);
@@ -193,6 +179,17 @@ public class AccountController extends BaseController<Account,Integer>{
 	 */
 	@ApiOperation(value = "账户数量", notes = "账户数量查询")
 	@RequestMapping(value = "/count", method = {RequestMethod.GET,RequestMethod.POST})
+	@ApiImplicitParams({
+		  @ApiImplicitParam(name="accountId",value="账户ID",dataType="int", paramType = "query"),
+		  @ApiImplicitParam(name="auth",value="认证，0没认证，1审核中，2已认证",dataType="int", paramType = "query"),
+		  @ApiImplicitParam(name="phone",value="手机号，模糊查询",dataType="string", paramType = "query"),
+		  @ApiImplicitParam(name="email",value="email，模糊查询",dataType="string", paramType = "query"),
+		  @ApiImplicitParam(name="realname",value="真实姓名，模糊查询",dataType="string", paramType = "query"),
+		  @ApiImplicitParam(name="roleId",value="角色ID",dataType="int", paramType = "query"),
+		  @ApiImplicitParam(name="status",value="状态，0正常，1锁定，2，异常",dataType="int", paramType = "query"),
+		  @ApiImplicitParam(name="createDate",value="创建时间",dataType="date-time", paramType = "query"),
+		  @ApiImplicitParam(name="loginDate",value="最后登陆时间",dataType="date-time", paramType = "query")
+		  })
 	public @ResponseBody StateResultList<Integer> count(
 			@RequestParam(value="accountId",required=false)Integer  accountId,
 			@RequestParam(value="auth",required=false)Integer auth,
@@ -207,14 +204,15 @@ public class AccountController extends BaseController<Account,Integer>{
 		Map<String, Object> eq=new HashMap<String,Object>();
 		eq.put("accountId", accountId);
 		eq.put("auth", auth);
-		eq.put("phone", phone);
-		eq.put("email", email);
 		eq.put("realname", realname);
 		eq.put("roleId", roleId);
 		eq.put("status", status);
 		eq.put("createDate", createDate);
 		eq.put("loginDate", loginDate);
-		StateResultList<Integer> r = super.count(eq, null, null, null, null, null, null, null,null);
+		Map<String, Object> like=new HashMap<String,Object>();
+		like.put("phone", phone);
+		like.put("email", email);
+		StateResultList<Integer> r = super.count(eq, null, null, null, null, null, like, null,null);
 		return r;
 	}
 	/**
@@ -383,4 +381,61 @@ public class AccountController extends BaseController<Account,Integer>{
 		return ResultUtil.getSlefSRFailList(list);
 		
 	}
+	/**
+	 * 管理员登录
+	 * @return
+	 * @throws MySessionException 
+	 */
+	@ApiOperation(value = "管理员登录", notes = "管理员登录")
+	@ApiImplicitParams({
+		  @ApiImplicitParam(name="adminName",value="手机号/电子邮箱",dataType="string", paramType = "query",required=true),
+		  @ApiImplicitParam(name="password",value="新密码",dataType="string", paramType = "query",required=true),
+		  @ApiImplicitParam(name="random",value="验证码",dataType="string", paramType = "query",required=true)
+		  })
+	@RequestMapping(value = "/login", method = {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody StateResultList<List<Account>> loginAccount(
+			@RequestParam(value="adminName") String adminName,
+			@RequestParam(value="password") String password,
+			@RequestParam(value="random",required=false) String random,
+			HttpSession session) throws MySessionException  {
+		Map<String, Object> eq=new HashMap<String,Object>();
+		eq.put("password", MyDESutil.getMD5(password));
+		Map<String, Object> or=new HashMap<String,Object>();
+		or.put("phone", adminName);
+		or.put("email", adminName);
+		 List<Account> lr = accountService.list(1, 1, null, null,eq, null, null, null, null, null, null, null,or);
+		 if(lr.size()>0){
+			 session.setAttribute("account", lr.get(0));
+			return ResultUtil.getSlefSRSuccessList(lr);
+		 }
+		throw new AccountLoginException();//账户或密码错误
+	}
+	/**
+	 * 是否登录
+	 * @return
+	 */
+	@ApiOperation(value = "是否登录", notes = "是否登录")
+	@RequestMapping(value = "/islogin", method = {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody StateResultList<List<Account>> isLoginAccount(
+			HttpSession session)  {
+		Account account = (Account) session.getAttribute("account");
+		List<Account> list = new ArrayList<Account>();
+		if(account!=null && !account.equals("")){
+			list.add(account);
+			return ResultUtil.getSlefSRSuccessList(list);
+		}
+		throw new AccountIsNotLoginException();//没有登录
+	}
+	/**
+	 * 登出
+	 * @return
+	 */
+	@ApiOperation(value = "登出", notes = "登出")
+	@RequestMapping(value = "/loginout", method = {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody StateResultList<List<Account>> loginoutAccount(
+			HttpSession session)  {
+		session.invalidate();
+		return ResultUtil.getSlefSRSuccessList(null);
+	}
+	
 }
